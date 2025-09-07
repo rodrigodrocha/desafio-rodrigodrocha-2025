@@ -43,24 +43,56 @@ class AbrigoAnimais {
     let listaBrinquedosPessoa2 = this.transformaLista(brinquedosPessoa2)
     let listaOrdemAnimais = this.transformaLista(ordemAnimais)
     const verificandoAnimais = this.verificaAnimal(listaOrdemAnimais)
-    const elista = Array.isArray(listaOrdemAnimais)
-    if (elista && verificandoAnimais){
+    if (!verificandoAnimais){
+      console.log(" erro: 'Animal inválido'")
+      return { erro: 'Animal inválido'  }
+    }
+    else{
+      // const elista = Array.isArray(listaOrdemAnimais)
+      // if (elista){
       for (const nome of listaOrdemAnimais){
         const brinquedosDicionario = this.animais[nome]['brinquedos']
         const especie = this.animais[nome]["especie"]
-        const verificandoBrinquedos = this.verificaBrinquedos(listaBrinquedosPessoa1, listaBrinquedosPessoa2, brinquedosDicionario, especie)
-      }
-    } 
+        const verificandoBrinquedos = this.verificaBrinquedos(listaBrinquedosPessoa1, listaBrinquedosPessoa2, brinquedosDicionario, especie, nome)
+      } // fim do for percorrendo os brinquendos de cada animal da lista de animal.
+      // } fim do if (elista)
+    } //fim do else que os nomes dos animais estão todos corretos.
+    
   }
 
   //Método que mostra as lista de brinquedos do animal e os brinquedos que o usuário inseriu
-  verificaBrinquedos(brinquedosPessoa1, brinquedosPessoa2, brinquedosDic, especie){
-    console.log(brinquedosPessoa1)
-    console.log(brinquedosPessoa2)
-    console.log(brinquedosDic)
-    console.log("Gato ou Cão: " + especie)
+  verificaBrinquedos(brinquedosPessoa1, brinquedosPessoa2, brinquedosDic, especie, nome){
+    let situacaoPessoa1 = this.aptaAdocao(brinquedosPessoa1, brinquedosDic)
+    let situacaoPessoa2 = this.aptaAdocao(brinquedosPessoa2, brinquedosDic)
+    if (!situacaoPessoa1 && !situacaoPessoa2) {
+      console.log(nome + " - abrigo")
+      return true
+    } 
+    if (situacaoPessoa1 && !situacaoPessoa2) {
+      console.log(nome + " - pessoa 1")
+      return true
+    } 
+    if (!situacaoPessoa1 && situacaoPessoa2) {
+      console.log(nome + " - pessoa 2")
+      return true
+    } else {
+      console.log(nome + " - abrigo")
+      return true
+    }
+  } // fim do método verifica brinquedos
 
-
+  // método se a pessoa esta apta a adoção
+  aptaAdocao(brinquedos, brinquedosDic){
+    this.j = 0
+    for (const brinquedo of brinquedos) {
+      if (brinquedo == brinquedosDic[this.j]) {
+        this.j++
+      }
+    }
+    if (this.j == brinquedosDic.length){
+      return true
+    }
+    return false
   }
   
   //método para vericar se o nome do animal inserido pelo usuário existe na lista de animal do abrigo
@@ -69,7 +101,6 @@ class AbrigoAnimais {
     //Verificando se tem nome duplicado de animal.
     const temNomeDuplicado = this.eDuplicado(animal)
     if (temNomeDuplicado){
-      console.log(" erro: 'Animal inválido'");
       return false;
     }
     const tamanhoListaUsuarios = animal.length
@@ -85,7 +116,6 @@ class AbrigoAnimais {
           }
         }
         if (this.j == 1) {
-          console.log(" erro: 'Animal inválido'");
           return false;
         }
         this.iUsuario++
