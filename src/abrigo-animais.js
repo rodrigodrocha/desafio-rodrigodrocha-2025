@@ -48,36 +48,38 @@ class AbrigoAnimais {
       return { erro: 'Animal inválido'  }
     }
     else{
-      // const elista = Array.isArray(listaOrdemAnimais)
-      // if (elista){
-      for (const nome of listaOrdemAnimais){
-        const brinquedosDicionario = this.animais[nome]['brinquedos']
-        const especie = this.animais[nome]["especie"]
-        const verificandoBrinquedos = this.verificaBrinquedos(listaBrinquedosPessoa1, listaBrinquedosPessoa2, brinquedosDicionario, especie, nome)
-      } // fim do for percorrendo os brinquendos de cada animal da lista de animal.
-      // } fim do if (elista)
+      let brinquedoEDuplicado1 = this.eDuplicado(listaBrinquedosPessoa1) 
+      let brinquedoEDuplicado2 = this.eDuplicado(listaBrinquedosPessoa2)
+      if (brinquedoEDuplicado1 || brinquedoEDuplicado2) {
+        console.log(" erro: 'Brinquedo inválido'")
+        return { erro: 'Brinquedo inválido'  }
+      } else {
+          for (const nome of listaOrdemAnimais){
+            const brinquedosDicionario = this.animais[nome]['brinquedos']
+            const verificandoBrinquedos = this.verificaBrinquedos(listaBrinquedosPessoa1, listaBrinquedosPessoa2, brinquedosDicionario, nome)
+            this.SituacaoFinalDoAnimal.push(verificandoBrinquedos)
+          }
+        }
     } //fim do else que os nomes dos animais estão todos corretos.
-    
+    console.log(this.SituacaoFinalDoAnimal)
+    return this.SituacaoFinalDoAnimal
   }
 
   //Método que mostra as lista de brinquedos do animal e os brinquedos que o usuário inseriu
-  verificaBrinquedos(brinquedosPessoa1, brinquedosPessoa2, brinquedosDic, especie, nome){
+  verificaBrinquedos(brinquedosPessoa1, brinquedosPessoa2, brinquedosDic, nome){
     let situacaoPessoa1 = this.aptaAdocao(brinquedosPessoa1, brinquedosDic)
     let situacaoPessoa2 = this.aptaAdocao(brinquedosPessoa2, brinquedosDic)
+
     if (!situacaoPessoa1 && !situacaoPessoa2) {
-      console.log(nome + " - abrigo")
-      return true
+      return nome + " - abrigo"
     } 
     if (situacaoPessoa1 && !situacaoPessoa2) {
-      console.log(nome + " - pessoa 1")
-      return true
+      return nome + " - pessoa 1"
     } 
     if (!situacaoPessoa1 && situacaoPessoa2) {
-      console.log(nome + " - pessoa 2")
-      return true
+      return nome + " - pessoa 2"
     } else {
-      console.log(nome + " - abrigo")
-      return true
+      return nome + " - abrigo"
     }
   } // fim do método verifica brinquedos
 
@@ -132,7 +134,7 @@ class AbrigoAnimais {
   transformaLista(a){
     let lista = a.split(",")
     lista = lista.map(p => p.toLowerCase())
-    return lista
+    return lista.sort()
   }
   
 }
