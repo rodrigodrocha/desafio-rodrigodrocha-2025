@@ -61,15 +61,15 @@ class AbrigoAnimais {
           }
         }
     } //fim do else que os nomes dos animais estão todos corretos.
-    console.log(this.SituacaoFinalDoAnimal)
-    return this.SituacaoFinalDoAnimal
+    console.log(this.SituacaoFinalDoAnimal.sort())
+    return this.SituacaoFinalDoAnimal.sort()
   }
 
   //Método que mostra as lista de brinquedos do animal e os brinquedos que o usuário inseriu
   verificaBrinquedos(brinquedosPessoa1, brinquedosPessoa2, brinquedosDic, nome){
     let situacaoPessoa1 = this.aptaAdocao(brinquedosPessoa1, brinquedosDic)
     let situacaoPessoa2 = this.aptaAdocao(brinquedosPessoa2, brinquedosDic)
-
+    console.log(nome)
     if (!situacaoPessoa1 && !situacaoPessoa2) {
       return nome + " - abrigo"
     } 
@@ -134,7 +134,7 @@ class AbrigoAnimais {
   transformaLista(a){
     let lista = a.split(",")
     lista = lista.map(p => p.toLowerCase())
-    return lista.sort()
+    return lista
   }
   
 }
