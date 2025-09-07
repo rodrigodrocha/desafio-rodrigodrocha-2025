@@ -69,7 +69,6 @@ class AbrigoAnimais {
   verificaBrinquedos(brinquedosPessoa1, brinquedosPessoa2, brinquedosDic, nome){
     let situacaoPessoa1 = this.aptaAdocao(brinquedosPessoa1, brinquedosDic)
     let situacaoPessoa2 = this.aptaAdocao(brinquedosPessoa2, brinquedosDic)
-    console.log(nome)
     if (!situacaoPessoa1 && !situacaoPessoa2) {
       return nome + " - abrigo"
     } 
