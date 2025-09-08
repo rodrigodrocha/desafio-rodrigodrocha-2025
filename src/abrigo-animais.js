@@ -5,6 +5,8 @@ class AbrigoAnimais {
     this.iUsuario = 0
     this.j = 0
     this.SituacaoFinalDoAnimal = []
+    this.contarPessoa1 = 0
+    this.contarPessoa2 = 0
     this.animais = {
       rex : {
         especie : "cao",
@@ -60,7 +62,7 @@ class AbrigoAnimais {
             this.SituacaoFinalDoAnimal.push(verificandoBrinquedos)
           }
         }
-    } //fim do else que os nomes dos animais estão todos corretos.
+      } //fim do else que os nomes dos animais estão todos corretos.
     console.log(this.SituacaoFinalDoAnimal.sort())
     return this.SituacaoFinalDoAnimal.sort()
   }
@@ -73,10 +75,22 @@ class AbrigoAnimais {
       return nome + " - abrigo"
     } 
     if (situacaoPessoa1 && !situacaoPessoa2) {
-      return nome + " - pessoa 1"
+      this.contarPessoa1++
+      if (this.contarPessoa1 < 4){
+        return nome + " - pessoa 1"
+      }
+      else{
+        return nome + " - abrigo"
+      }
     } 
     if (!situacaoPessoa1 && situacaoPessoa2) {
-      return nome + " - pessoa 2"
+      this.contarPessoa2++
+      if (this.contarPessoa2 < 4){
+        return nome + " - pessoa 2"
+      }
+      else{
+        return nome + " - abrigo"
+      }
     } else {
       return nome + " - abrigo"
     }

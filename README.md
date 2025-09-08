@@ -3,6 +3,7 @@
 ## DESCRIÇÃO DE FUNCIONAMENTO DO ALGORITMO
 Para realizar os teste utilizaremos o arquivo ``main.js`` é o resultado final do código é instânciando um objeto da classe ``abrigo-animais`` e invocando o método ``encontraPessoas`` dessa classe.
 ![alt text](image.png)
+1. Para a solução das pessoas aptas a adotarem mais de 3 animais. Os três primeiros animais ela iria adotar o restante que ela estiver apta infelizmente esses animais vão para o abrigo.
 
 ## COMO BAIXAR O CÓDIGO E SUBMETER MINHA SOLUÇÃO?
 Para completar a etapa do desafio você terá que baixar a estrutura do código aqui na Azure, resolver o desafio usando Javascript e entregá-lo no repositório no seu github.
