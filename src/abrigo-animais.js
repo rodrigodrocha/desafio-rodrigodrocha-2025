@@ -7,6 +7,9 @@ class AbrigoAnimais {
     this.SituacaoFinalDoAnimal = []
     this.contarPessoa1 = 0
     this.contarPessoa2 = 0
+    this.loco = 0 
+    this.locoPessoa1 
+    this.locoPessoa2
     this.animais = {
       rex : {
         especie : "cao",
@@ -58,19 +61,46 @@ class AbrigoAnimais {
       } else {
           for (const nome of listaOrdemAnimais){
             const brinquedosDicionario = this.animais[nome]['brinquedos']
+            // Verificando a jabuti que não quer ser adotada sozinha
+            if (nome == "loco"){
+              const [brinq1, brinq2] = brinquedosDicionario
+              this.locoPessoa1 = this.aptaAdocao(listaBrinquedosPessoa1, 0, brinq1, brinq2, nome)
+              this.locoPessoa2 = this.aptaAdocao(listaBrinquedosPessoa2, 0, brinq1, brinq2, nome)
+              continue
+            }
             const verificandoBrinquedos = this.verificaBrinquedos(listaBrinquedosPessoa1, listaBrinquedosPessoa2, brinquedosDicionario, nome)
+            
             this.SituacaoFinalDoAnimal.push(verificandoBrinquedos)
+          }
+          if (this.locoPessoa1 || this.locoPessoa2){
+              if(this.contarPessoa1 != 0 && this.contarPessoa1 < 3 && this.locoPessoa1){
+                this.SituacaoFinalDoAnimal.push("loco - pessoa 1")
+                this.locoPessoa1 = false
+                this.locoPessoa2 = false
+                this.contarPessoa1++
+              } else if(this.contarPessoa2 !=0 && this.contarPessoa2 < 3 && this.locoPessoa2){
+                  this.SituacaoFinalDoAnimal.push("loco - pessoa 2")
+                  this.locoPessoa1 = false
+                  this.locoPessoa2 = false
+                  this.contarPessoa2++
+              } else{
+                this.SituacaoFinalDoAnimal.push("loco - abrigo")
+              }
           }
         }
       } //fim do else que os nomes dos animais estão todos corretos.
     console.log(this.SituacaoFinalDoAnimal.sort())
     return this.SituacaoFinalDoAnimal.sort()
   }
-
   //Método que mostra as lista de brinquedos do animal e os brinquedos que o usuário inseriu
-  verificaBrinquedos(brinquedosPessoa1, brinquedosPessoa2, brinquedosDic, nome){
-    let situacaoPessoa1 = this.aptaAdocao(brinquedosPessoa1, brinquedosDic)
-    let situacaoPessoa2 = this.aptaAdocao(brinquedosPessoa2, brinquedosDic)
+  verificaBrinquedos(brinquedo1, brinquedo2, brinquedosDic, nome){
+    //verificando se o animal é o loco pois ele não se importa com a sequência dos brinquedos mas quer um amigo que vai junto com ele
+    let situacaoPessoa1 = this.aptaAdocao(brinquedo1, brinquedosDic)
+    let situacaoPessoa2 = this.aptaAdocao(brinquedo2, brinquedosDic)
+    return this.descobreSituacaoFinalAnimal(situacaoPessoa1, situacaoPessoa2, nome)
+  }
+  // Descobrindo para onde o animal vai
+  descobreSituacaoFinalAnimal(situacaoPessoa1, situacaoPessoa2, nome){ 
     if (!situacaoPessoa1 && !situacaoPessoa2) {
       return nome + " - abrigo"
     } 
@@ -94,22 +124,33 @@ class AbrigoAnimais {
     } else {
       return nome + " - abrigo"
     }
-  } // fim do método verifica brinquedos
-
+  } // fim do método Descobre situação final do animal
   // método se a pessoa esta apta a adoção
-  aptaAdocao(brinquedos, brinquedosDic){
+  aptaAdocao(brinquedos, brinquedosDic, brinquedo1Loco, brinquedo2Loco, nome){
     this.j = 0
-    for (const brinquedo of brinquedos) {
-      if (brinquedo == brinquedosDic[this.j]) {
-        this.j++
+    if(nome != "loco"){
+      for (const brinquedo of brinquedos) {
+        if (brinquedo == brinquedosDic[this.j]) {
+          this.j++
+        }
       }
+      if (this.j == brinquedosDic.length){
+        return true
+      }
+      return false
     }
-    if (this.j == brinquedosDic.length){
-      return true
+    else {
+      for (const brinquedo of brinquedos) {
+        if (brinquedo == brinquedo1Loco || brinquedo == brinquedo2Loco){
+          this.loco++
+        }
+      }
+      if (this.loco == 2){
+        return true
+      }
+      return false
     }
-    return false
   }
-  
   //método para vericar se o nome do animal inserido pelo usuário existe na lista de animal do abrigo
   verificaAnimal(animal) {
     const tamanhoDicionario = Object.keys(this.animais).length;
@@ -135,8 +176,8 @@ class AbrigoAnimais {
         }
         this.iUsuario++
         if (this.iUsuario == tamanhoListaUsuarios) {
-          return true;
         }
+        return true;
       }
   }
   //verifica se tem dados duplicados. Exemplo brinquedo ou nome de animal
