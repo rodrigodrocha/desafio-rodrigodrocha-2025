@@ -174,7 +174,6 @@ class AbrigoAnimais {
     if (temNomeDuplicado){
       return false;
     }
-    const tamanhoListaUsuarios = animal.length
       for (const nomeAnimal of animal){
         this.iDicionario = 0;
         for (const chave in this.animais){
@@ -189,11 +188,8 @@ class AbrigoAnimais {
         if (this.j == 1) {
           return false;
         }
-        this.iUsuario++
-        if (this.iUsuario == tamanhoListaUsuarios) {
-        }
-        return true;
       }
+      return true;
   }
   //verifica se tem dados duplicados. Exemplo brinquedo ou nome de animal
   eDuplicado(lista) {
