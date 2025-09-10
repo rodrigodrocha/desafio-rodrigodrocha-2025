@@ -10,6 +10,7 @@ class AbrigoAnimais {
     this.loco = 0 
     this.locoPessoa1 
     this.locoPessoa2
+    this.locoExiste = false
     this.animais = {
       rex : {
         especie : "cao",
@@ -66,29 +67,15 @@ class AbrigoAnimais {
               const [brinq1, brinq2] = brinquedosDicionario
               this.locoPessoa1 = this.aptaAdocao(listaBrinquedosPessoa1, 0, brinq1, brinq2, nome)
               this.locoPessoa2 = this.aptaAdocao(listaBrinquedosPessoa2, 0, brinq1, brinq2, nome)
+              this.locoExiste = true
               continue
             }
             const verificandoBrinquedos = this.verificaBrinquedos(listaBrinquedosPessoa1, listaBrinquedosPessoa2, brinquedosDicionario, nome)
-            
             this.SituacaoFinalDoAnimal.push(verificandoBrinquedos)
-          }
-          if (this.locoPessoa1 || this.locoPessoa2){
-              if(this.contarPessoa1 != 0 && this.contarPessoa1 < 3 && this.locoPessoa1){
-                this.SituacaoFinalDoAnimal.push("loco - pessoa 1")
-                this.locoPessoa1 = false
-                this.locoPessoa2 = false
-                this.contarPessoa1++
-              } else if(this.contarPessoa2 !=0 && this.contarPessoa2 < 3 && this.locoPessoa2){
-                  this.SituacaoFinalDoAnimal.push("loco - pessoa 2")
-                  this.locoPessoa1 = false
-                  this.locoPessoa2 = false
-                  this.contarPessoa2++
-              } else{
-                this.SituacaoFinalDoAnimal.push("loco - abrigo")
-              }
           }
         }
       } //fim do else que os nomes dos animais estão todos corretos.
+    this.descobreSituacaoDoLoco(this.locoPessoa1, this.locoPessoa2)
     console.log(this.SituacaoFinalDoAnimal.sort())
     return this.SituacaoFinalDoAnimal.sort()
   }
@@ -106,6 +93,7 @@ class AbrigoAnimais {
     } 
     if (situacaoPessoa1 && !situacaoPessoa2) {
       this.contarPessoa1++
+      this.descobreSituacaoDoLoco(this.locoPessoa1, this.locoPessoa2)
       if (this.contarPessoa1 < 4){
         return nome + " - pessoa 1"
       }
@@ -115,6 +103,7 @@ class AbrigoAnimais {
     } 
     if (!situacaoPessoa1 && situacaoPessoa2) {
       this.contarPessoa2++
+      this.descobreSituacaoDoLoco(this.locoPessoa1, this.locoPessoa2)
       if (this.contarPessoa2 < 4){
         return nome + " - pessoa 2"
       }
@@ -125,6 +114,31 @@ class AbrigoAnimais {
       return nome + " - abrigo"
     }
   } // fim do método Descobre situação final do animal
+  descobreSituacaoDoLoco(pessoa1, pessoa2){
+    if (this.locoExiste) {
+      this.locoExiste = false
+      if ((pessoa1 == 1 && pessoa2 == 1) || (pessoa1 == 0 && pessoa2 == 0)) {
+        pessoa1 = -1
+        pessoa2 = -1
+        this.SituacaoFinalDoAnimal.push("loco - abrigo")
+      }
+      if ((pessoa1 == 1) && (this.contarPessoa1 > 0) && (this.contarPessoa1 < 4)  && (pessoa2 == 0)){
+        pessoa1 = -1
+        this.contarPessoa1++
+        this.SituacaoFinalDoAnimal.push("loco - pessoa 1")
+      }
+      if ((pessoa1 == 1 && this.contarPessoa1 == 4) || (pessoa1 == 2 && this.contarPessoa2 == 3)) {
+        pessoa1 = -1
+        pessoa2 = -1
+        this.SituacaoFinalDoAnimal.push("loco - abrigo")
+      }
+      if (pessoa2 == 1 && this.contarPessoa2 > 0 && this.contarPessoa2 < 4 && pessoa1 == 0) {
+        pessoa2 = -1
+        this.contarPessoa2++
+        this.SituacaoFinalDoAnimal.push("loco - pessoa 2")
+      }
+    }
+  }
   // método se a pessoa esta apta a adoção
   aptaAdocao(brinquedos, brinquedosDic, brinquedo1Loco, brinquedo2Loco, nome){
     this.j = 0
@@ -146,9 +160,10 @@ class AbrigoAnimais {
         }
       }
       if (this.loco == 2){
-        return true
+        this.loco = 0
+        return 1
       }
-      return false
+      return 0
     }
   }
   //método para vericar se o nome do animal inserido pelo usuário existe na lista de animal do abrigo
